@@ -21,6 +21,6 @@ cat << EOF | sudo tee /etc/security/limits.d/memlock.conf
 * soft memlock 2147484
 EOF
 sudo sed -i -e '/home/s/\bdefaults\b/&,noatime/' /etc/fstab
-sudo sed -i 's/\bGRUB_CMDLINE_LINUX_DEFAULT="\b/&mitigations=off nowatchdog nmi_watchdog=0 /' /etc/default/grub
+sudo sed -i 's/\bGRUB_CMDLINE_LINUX_DEFAULT="\b/&mitigations=off nowatchdog nmi_watchdog=0 transparent_hugepage=madvise /' /etc/default/grub
 sudo grub-mkconfig -o /boot/efi/EFI/steamos/grub.cfg
 ```
