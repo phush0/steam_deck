@@ -15,7 +15,22 @@ sudo systemctl enable cpu_performance.service
 cat << EOF | sudo tee /etc/tmpfiles.d/mglru.conf
 w /sys/kernel/mm/lru_gen/enabled - - - - 7
 w /sys/kernel/mm/lru_gen/min_ttl_ms - - - - 0
-w /sys/block/zram0/comp_algorithm - - - - lz4
+EOF
+cat << EOF | sudo tee cat /etc/systemd/zram-generator.conf# -*- mode: sh; indent-tabs-mode: nil; sh-basic-offset: 2; -*-
+# vim: et sts=2 sw=2
+
+#  SPDX-License-Identifier: LGPL-2.1+
+#
+#  Copyright © 2023 Valve Corporation.
+#
+#  This file is part of holo.
+
+[zram0]
+# size at 50% of physical RAM (after discounting memory used by the kernel)
+zram-size = ram/2
+compression-algorithm = lz4
+swap-priority = 100
+fs-type = swap
 EOF
 cat << EOF | sudo tee /etc/security/limits.d/memlock.conf
 * hard memlock 2147484
