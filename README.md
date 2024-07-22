@@ -16,7 +16,8 @@ cat << EOF | sudo tee /etc/tmpfiles.d/mglru.conf
 w /sys/kernel/mm/lru_gen/enabled - - - - 7
 w /sys/kernel/mm/lru_gen/min_ttl_ms - - - - 0
 EOF
-cat << EOF | sudo tee cat /etc/systemd/zram-generator.conf# -*- mode: sh; indent-tabs-mode: nil; sh-basic-offset: 2; -*-
+cat << EOF | sudo tee cat /etc/systemd/zram-generator.conf
+# -*- mode: sh; indent-tabs-mode: nil; sh-basic-offset: 2; -*-
 # vim: et sts=2 sw=2
 
 #  SPDX-License-Identifier: LGPL-2.1+
