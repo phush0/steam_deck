@@ -29,7 +29,7 @@ cat << EOF | sudo tee cat /etc/systemd/zram-generator.conf
 [zram0]
 # size at 50% of physical RAM (after discounting memory used by the kernel)
 zram-size = ram/2
-compression-algorithm = lz4
+compression-algorithm = zstd
 swap-priority = 100
 fs-type = swap
 EOF
@@ -38,11 +38,12 @@ cat << EOF | sudo tee /etc/security/limits.d/memlock.conf
 * soft memlock 2147484
 EOF
 cat << EOF | sudo tee /etc/sysctl.d/99-swappiness.conf
-vm.page-cluster=1
+vm.page-cluster=0
 vm.watermark_boost_factor=0
 vm.watermark_scale_factor=125
+vm.swappiness=180
 EOF
 sudo sed -i -e '/home/s/\bdefaults\b/&,noatime/' /etc/fstab
-sudo sed -i 's/\bGRUB_CMDLINE_LINUX_DEFAULT="\b/&mitigations=off nowatchdog nmi_watchdog=0 transparent_hugepage=madvise /' /etc/default/grub
+sudo sed -i 's/\bGRUB_CMDLINE_LINUX_DEFAULT="\b/&mitigations=off nowatchdog nmi_watchdog=0 /' /etc/default/grub
 sudo grub-mkconfig -o /boot/efi/EFI/steamos/grub.cfg
 ```
