@@ -15,6 +15,11 @@ sudo systemctl enable cpu_performance.service
 cat << EOF | sudo tee /etc/tmpfiles.d/mglru.conf
 w /sys/kernel/mm/lru_gen/enabled - - - - 7
 w /sys/kernel/mm/lru_gen/min_ttl_ms - - - - 0
+w /sys/kernel/mm/transparent_hugepage/shmem_enabled - - - - advise
+w /sys/kernel/mm/transparent_hugepage/defrag - - - - defer
+w /sys/kernel/mm/transparent_hugepage/khugepaged/defrag - - - - 0
+w /proc/sys/vm/compaction_proactiveness - - - - 0
+w /proc/sys/vm/page_lock_unfairness - - - - 0
 EOF
 cat << EOF | sudo tee cat /etc/systemd/zram-generator.conf
 # -*- mode: sh; indent-tabs-mode: nil; sh-basic-offset: 2; -*-
