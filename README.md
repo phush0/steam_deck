@@ -32,6 +32,8 @@ ExecStart=/home/gen_zram.sh
 [Install]
 WantedBy=multi-user.target
 EOF
+sudo dd if=/dev/zero of=/home/test.img bs=4M count=1024
+sudo chmod +x /home/gen_zram.sh
 sudo systemctl daemon-reload
 sudo systemctl enable cpu_performance.service
 sudo systemctl enable zram_gen.service
