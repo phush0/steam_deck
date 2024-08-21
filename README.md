@@ -1,7 +1,7 @@
 # steam_deck
 
 ```
-cat << EOF | sudo tee /usr/local/bin/gen_zram.sh
+cat << EOF | sudo tee /home/gen_zram.sh
 #!/bin/bash
 var=$(< /sys/block/zram0/disksize)
 swapoff /dev/zram0
@@ -28,7 +28,7 @@ cat << EOF | sudo tee /etc/systemd/system/zram_gen.service
 Description=ZRAM gen service with loop backend
 [Service]
 Type=oneshot
-ExecStart=/usr/local/bin/gen_zram.sh
+ExecStart=/home/gen_zram.sh
 [Install]
 WantedBy=multi-user.target
 EOF
