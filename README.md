@@ -1,12 +1,34 @@
 # steam_deck
 
 ```
+cat << EOF | sudo tee /usr/local/bin/gen_zram.sh
+#!/bin/bash
+var=$(< /sys/block/zram0/disksize)
+swapoff /dev/zram0
+echo 1 > /sys/block/zram0/reset
+losetup -f /home/test.img
+echo /dev/loop0 > /sys/block/zram0/backing_dev
+echo $var > /sys/block/zram0/disksize
+mkswap /dev/zram0
+swapon /dev/zram0 -p 100
+echo all > /sys/block/zram0/idle
+echo huge_idle > /sys/block/zram0/writeback
+EOF
 cat << EOF | sudo tee /etc/systemd/system/cpu_performance.service
 [Unit]
 Description=CPU performance governor
 [Service]
 Type=oneshot
 ExecStart=/usr/bin/cpupower frequency-set -g performance
+[Install]
+WantedBy=multi-user.target
+EOF
+cat << EOF | sudo tee /etc/systemd/system/zram_gen.service
+[Unit]
+Description=ZRAM gen service with loop backend
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/gen_zram.sh
 [Install]
 WantedBy=multi-user.target
 EOF
