@@ -67,6 +67,10 @@ cat << EOF | sudo tee /etc/security/limits.d/memlock.conf
 * hard memlock 2147484
 * soft memlock 2147484
 EOF
+cat << EOF | sudo tee /etc/udev/rules.d/64-ioschedulers.rules
+ACTION=="add|change", KERNEL=="nvme[0-9]*", ATTR{queue/scheduler}="kyber"
+ACTION=="add|change", KERNEL=="sd[a-z]|mmcblk[0-9]*", ATTR{queue/rotational}=="0", ATTR{queue/scheduler}="kyber"
+EOF
 cat << EOF | sudo tee /etc/sysctl.d/99-swappiness.conf
 vm.page-cluster=0
 vm.watermark_boost_factor=0
